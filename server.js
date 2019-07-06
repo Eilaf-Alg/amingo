@@ -19,7 +19,7 @@ app.use(express.urlencoded( {extended: false}));
 
 /* GET home page. */
 app.get('/', (req,res) => res.json({
-	msg: "Hello! Amigo"
+	msg: "Hello! Amigo !"
 }));
 
 /* post to Db */
