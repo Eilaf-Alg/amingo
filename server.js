@@ -6,11 +6,15 @@ const bodyParser = require('body-parser');
 const app = express();
 const User = require('./models/User');
 const Post = require('./models/Post');
+const keys = require('./config/keys');
 
-const db = "mongodb+srv://astroAmigo:astrolabs@cluster0-srjrx.mongodb.net/test?retryWrites=true&w=majority"
+// Database connection string
+const db = keys.mongoURI;
 
+// configure express to read body from a POST request
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// connect to mongo with mongoose
 mongoose
     .connect(db, { useNewUrlParser: true })
     .then(()=> console.log("Db Connected"))
@@ -20,36 +24,12 @@ app.get('/', (req, res) => res.json({
     msg: "Hello Amingo!!"
 }));
 
+/* Route names and linking the route js files */
 const userRoutes = require('./routes/User')
 app.use('/users', userRoutes);
 
-app.post('/posts', (req, res) => {
-    User
-    .findOne({email: req.body.email})
-    .then( user => {
-        console.log("User found", user);
-        if (user) {
-            const newPost = new Post({
-                message: req.body.message,
-                user: user
-            })
-            newPost
-                .save()
-                .then(post=> res.json (post))
-                .catch(err => res.json(err))
-        } else {
-            return res.status(400).json({message: "User not found"})
-        }
-    })
-});
-
-//Method: GET
-// Route to fetch all the posts from collection
-app.get('/posts', (req, res) => {
-    Post.find()
-        .then(posts => res.json(posts))
-        .catch(err => console.log(err)) 
-});
+const postRoutes = require('./routes/Post')
+app.use('/posts', postRoutes);
 
 const port = process.env.PORT || 5000;
 
@@ -66,8 +46,8 @@ app.listen(port, () => console.log(`Your application is runnint @ http://localho
 // const Post = require("./models/Post"); //import the file we created
 
 // /* the line below to guide the request to the next file to be checked */
-// const userRoutes = require('./routes/User');
-// app.use('/users', userRoutes);
+// const userRoutes = require('./routes/User'); // here we import the other file
+// app.use('/users', userRoutes); // here we configure it. the server or app will append '/users' before all routes in User.js file
 
 
 // //connect to the DB

@@ -15,6 +15,8 @@ in the other ones such as User.js, we change app.post() app.get() all to router.
  * @param {string} email - Email of customer
  * @param {password} password - Password of customer
  */
+
+//http://localhost:5000/users/
 router.post('/', (req, res) => {
     const newUser = new User(({
         name: req.body.name,
@@ -48,6 +50,8 @@ router.get('/', (req, res) => {
  * 
  * @param {string} email - Email of customer
  */
+
+http://localhost:5000/users/posts
 router.post('/posts', (req, res) => {
     // User model (mongoose) will find an email from req.body
     User.findOne({email: req.body.email})
