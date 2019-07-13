@@ -3,10 +3,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const app = express();
+const app = express(); // app is an instance of express
 const User = require('./models/User');
 const Post = require('./models/Post');
 const keys = require('./config/keys');
+const passport = require('passport'); // this is for authentication purposes
 
 // Database connection string
 const db = keys.mongoURI;
@@ -20,16 +21,25 @@ mongoose
     .then(()=> console.log("Db Connected"))
     .catch(err => console.log(err));
 
+// Init passportjs
+app.use(passport.initialize());
+// Import the function 'passport' from the file passport.js and invoke it (call it) immediately
+require("./config/passport")(passport);
+
 app.get('/', (req, res) => res.json({
     msg: "Hello Amingo!!"
 }));
 
 /* Route names and linking the route js files */
+//User
 const userRoutes = require('./routes/User')
 app.use('/users', userRoutes);
-
+//Post
 const postRoutes = require('./routes/Post')
 app.use('/posts', postRoutes);
+//Auth
+const authRoutes = require('./routes/Auth');
+app.use('/auth', authRoutes);
 
 const port = process.env.PORT || 5000;
 

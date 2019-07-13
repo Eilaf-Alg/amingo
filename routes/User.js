@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express"); 
 const User = require("../models/User"); //importing the file looks different cz we are inside a folder
 
 const router = express.Router(); // to allow us to use the routes outside the file server.js
@@ -15,8 +15,8 @@ in the other ones such as User.js, we change app.post() app.get() all to router.
  * @param {string} email - Email of customer
  * @param {password} password - Password of customer
  */
-
 //http://localhost:5000/users/
+
 router.post('/', (req, res) => {
     const newUser = new User(({
         name: req.body.name,
@@ -36,6 +36,8 @@ router.post('/', (req, res) => {
  * 
  * @name GET: /users/
  */
+//http://localhost:5000/users/
+
 router.get('/', (req, res) => {
     User.find()
         .then(users => res.json(users))
@@ -50,8 +52,8 @@ router.get('/', (req, res) => {
  * 
  * @param {string} email - Email of customer
  */
+//http://localhost:5000/users/posts
 
-http://localhost:5000/users/posts
 router.post('/posts', (req, res) => {
     // User model (mongoose) will find an email from req.body
     User.findOne({email: req.body.email})
