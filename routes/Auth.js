@@ -19,7 +19,7 @@ router.post('/register', (req, res) => {
                     email: req.body.email,
                     password: req.body.password
                 });
-
+                /* Boilerplate code below. bcrypt is for hashing */
                 bcrypt.genSalt((err, salt) => {
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if (err) throw err;
@@ -36,8 +36,45 @@ router.post('/register', (req, res) => {
 
 //Login route
 //http://localhost:5000/auth/login
+/**
+ * Post route for login.
+ * 
+ * @name POST: /auth/login/
+ * 
+ * @param {string} email - email of the user
+ * @param {string} password - password of user
+ */
 router.post('/login', (req, res) => {
-    
-})
+    User.findOne({email: req.body.email})
+     .then(user=>{
+         if(!user) {
+             return res.status(400).json({"message": "Email doesn't exist"});
+         } else {
+             bcrypt.compare(req.body.password, user.password)
+                 .then(isMatch => {
+                     
+                     if (isMatch) {
+                         const payload = {id: user.id, name: user.name, email: user.email};
+ 
+                         // Sign Token
+                         jwt.sign(
+                             payload,
+                             keys.secret,
+                             (err, token) => {
+                                 res.json({
+                                     success: true,
+                                     token: token,
+                                     name: user.name
+                                 });
+                             }
+                         );
+                     } else {
+                         return res.status(400).json({"message": "Password is invalid"})
+                     }
+                 })
+         }
+     })
+ });
+
 
 module.exports = router;

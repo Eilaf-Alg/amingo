@@ -36,7 +36,8 @@ const userRoutes = require('./routes/User')
 app.use('/users', userRoutes);
 //Post
 const postRoutes = require('./routes/Post')
-app.use('/posts', postRoutes);
+app.use('/posts', passport.authenticate('jwt', {session: false}) ,postRoutes); /* adding the middle argument to authenticate
+is necessary to prevent users from posting unless they are logged in */
 //Auth
 const authRoutes = require('./routes/Auth');
 app.use('/auth', authRoutes);
