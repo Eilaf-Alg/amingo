@@ -33,8 +33,8 @@ secret. but I'm still not sure if the secret is or isn't the same one for all us
 Passport is a library that has things ready for us and then we can install jwt, fb, linkedin, twitter, or github from npm to 
 add to our code based on which method we want to use.
 
-Implementing different keys for mongoDB URL and the secret (Ones coming from the local files, and the other from heroku env variables). 
-AKA having two seperate environments (dev and prod) allows us 
+Implementing different keys for mongoDB URL and the secret (Ones coming from the local files 'dev', and the others 
+from heroku env variables 'dev'). AKA having two seperate environments (dev and prod) allows us 
 to use 2 separate Databases or secrets such that if we want to test something, we don't mess up users' actual deployed database
 but mess up a safe testing database
 
