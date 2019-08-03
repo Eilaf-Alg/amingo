@@ -90,7 +90,7 @@ router.post('/:userId/follow', (req, res) => {
                 .catch(err => res.json({"message": "Invalid user to follow"}));
         })
 })
-
+ 
 /**
  * Get route for fetching all the posts of a user.
  * 
