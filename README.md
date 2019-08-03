@@ -14,11 +14,11 @@
 │   ├── keys_prod.js (secret and db connection for development prod)
 │   └── passport.js (passport configuration)
 │
-├── models (database models goes here)
+├── models (database models go here)
 │   ├── Post.js 
 │   └── User.js
 │
-├── routes (routes goes here)
+├── routes (routes go here)
 │   ├── Auth.js (Login/Register endpoints) 
 │   ├── Post.js (/posts/ routes)
 │   └── User.js (/users/ routes)
