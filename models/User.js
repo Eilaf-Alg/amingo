@@ -22,7 +22,12 @@ const UserSchema = new Schema({
     date: {
         type: Date,
         default: Date.now 
-    }
+    },
+    /* We have square brackets below cz we have multiple objects stored*/
+    followers: [{
+        type: Schema.ObjectId, //ObjectId comes from MongoDB and Schema from mongoose
+        ref: 'user'
+    }]
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

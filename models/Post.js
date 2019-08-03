@@ -24,7 +24,11 @@ const PostSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  likes: [{
+    type: Schema.ObjectId, //ObjectId comes from MongoDB and Schema from mongoose
+    ref: 'user'
+  }]
 });
 
 // Line to allow us to export Post.js and 'post, is the name of our collection

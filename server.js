@@ -1,5 +1,9 @@
 /* CODE BELOW IS ONE FROM MINHAG'S GIT HUB */
 
+/******* V. IMPP NOTEE!!! must install CORS (CROSS ORIGIN ..) "npm install cors" otherwise server.js will not accept 
+ * connecting or accepting requests from any other external server. such as the React's front-end server
+ ***********************************************************/
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -8,12 +12,19 @@ const User = require('./models/User');
 const Post = require('./models/Post');
 const keys = require('./config/keys');
 const passport = require('passport'); // this is for authentication purposes
+const cors = require('cors'); //  by default, server does not accept requests from outside
 
-// Database connection string
-const db = keys.mongoURI;
+
+// configure express to use CORS
+app.use(cors());
 
 // configure express to read body from a POST request
 app.use(bodyParser.urlencoded({ extended: false }));
+// must configure ( bodyParser with JSON ) as one, together
+app.use(bodyParser.json()); //************** WITHOUT THIS LINE, CONNECTING TO FRONT-END DIDN'T WORK ****************/
+
+// Database connection string
+const db = keys.mongoURI;
 
 // connect to mongo with mongoose
 mongoose
@@ -33,18 +44,33 @@ app.get('/', (req, res) => res.json({
 /* Route names and linking the route js files */
 //User
 const userRoutes = require('./routes/User')
-app.use('/users', userRoutes);
+app.use('/users', passport.authenticate('jwt', {session: false}) ,userRoutes); //same middleware added as for posts route
 //Post
 const postRoutes = require('./routes/Post')
 app.use('/posts', passport.authenticate('jwt', {session: false}) ,postRoutes); /* adding the middle argument to authenticate
-is necessary to prevent users from posting unless they are logged in */
+is necessary to prevent users from posting unless they are logged in. Also called: middleware */
 //Auth
 const authRoutes = require('./routes/Auth');
 app.use('/auth', authRoutes);
 
+
+
+// // code below is Temporary to test and allow us to connect to React ************************
+// app.get('/', (req,res) => res.json({
+//     msg: "Helloo Amingo!!"
+// }));
+
+// app.post('/register-user', (req,res) => {
+//     res.json({msg: 'done'})
+// });
+// //************************ Temporary ************************************************** */
+
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Your application is runnint @ http://localhost:${port}`));
+
+
 
 
 /* MY OLD SERVER CODE IS BELOW: try it again, uncomment it and push it to heroku and then try posting in postman */

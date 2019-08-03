@@ -13,10 +13,10 @@ opts.secretOrKey = keys.secret;
 module.exports = passport => {
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-      User.findById(jwt_payload.id)
+      User.findById(jwt_payload.id) //findById function puts the user inside the response "res" object. finds the user through the ID
         .then(user => {
           if (user) {
-            return done(null, user);
+            return done(null, user); //returns the user here
           }
           return done(null, false);
         })
